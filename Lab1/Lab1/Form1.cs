@@ -21,6 +21,7 @@ namespace Lab1
 
         SetButtonState btnDelegate;
         MsgBox msgDelegate;
+
         public void SetBtnState(Button b,bool state)
         {
             b.Enabled = state;
@@ -48,43 +49,37 @@ namespace Lab1
             labelState2.Text = "";
         }
 
+
+        public void GenerateAndMultiplyMbyV(object multData)
+        {
+            MultiplyData data = (MultiplyData)multData;
+            data.GenerateMatrix();
+            data.GenerateVector();
+            data.MultiplyMatrixByVector();
+        }
+        public void GenerateAndMultiplyVbyM(object multData)
+        {
+            MultiplyData data = (MultiplyData)multData;
+            data.GenerateMatrix();
+            data.GenerateVector();
+            data.MultiplyVectorByMatrix();
+        }
+
         public void Button1Cycle(object multData)
         {
-            MultiplyData data = (MultiplyData)multData;
             startTime = DateTime.Now;
             DisableButtons();
-            data.GenerateMatrix();
-            data.GenerateVector();
-            data.MultiplyMatrixByVector();
+            GenerateAndMultiplyMbyV(multData);
             EnableButtons();
             this.Invoke(msgDelegate, "Time elapsed: " + DateTime.Now.Subtract(startTime).TotalMilliseconds + " ms");
         }
-
         public void Button2Cycle(object multData)
         {
-            MultiplyData data = (MultiplyData)multData;
             startTime = DateTime.Now;
             DisableButtons();
-            data.GenerateMatrix();
-            data.GenerateVector();
-            data.MultiplyVectorByMatrix();
+            GenerateAndMultiplyVbyM(multData);
             EnableButtons();
             this.Invoke(msgDelegate, "Time elapsed: " + DateTime.Now.Subtract(startTime).TotalMilliseconds + " ms");
-        }
-
-        public void button3_c_part1(object multData)
-        {
-            MultiplyData data = (MultiplyData)multData;
-            data.GenerateMatrix();
-            data.GenerateVector();
-            data.MultiplyMatrixByVector();
-        }
-        public void button3_c_part2(object multData)
-        {
-            MultiplyData data = (MultiplyData)multData;
-            data.GenerateMatrix();
-            data.GenerateVector();
-            data.MultiplyVectorByMatrix();
         }
         public void Button3Cycle()
         {
@@ -93,11 +88,11 @@ namespace Lab1
             startTime = DateTime.Now;
             DisableButtons();
 
-            Thread part1 = new Thread(button3_c_part1);
+            Thread part1 = new Thread(GenerateAndMultiplyMbyV);
             part1.IsBackground = true;
             part1.Start(data1);
 
-            Thread part2 = new Thread(button3_c_part2);
+            Thread part2 = new Thread(GenerateAndMultiplyVbyM);
             part2.IsBackground = true;
             part2.Start(data2);
 
@@ -108,6 +103,7 @@ namespace Lab1
 
             this.Invoke(msgDelegate, "Time elapsed: " + DateTime.Now.Subtract(startTime).TotalMilliseconds + " ms");
         }
+        
         public Form1()
         {
             btnDelegate = SetBtnState;
@@ -130,6 +126,7 @@ namespace Lab1
             currentOp.IsBackground = true;
             currentOp.Start(new MultiplyData(this, labelState));
         }
+        
         private void button3_Click(object sender, EventArgs e)
         {
             ClearLabels();

@@ -62,11 +62,15 @@ namespace Lab1
             for (int i = 0; i < M_SZ; i++)
             {
                 vector_res[i] = 0;
-                for (int j = 0; j < M_SZ; j++)
+            }
+            for (int j = 0; j < M_SZ; j++)
+            {
+                for (int i = 0; i < M_SZ; i++)
                     vector_res[i] += matrix[j, i] * vector[j];
 
-                int percentage = (i * 10000) / M_SZ;
-                try { owner.Invoke(textDelegate, "Multiplying vector by matrix: " + (((double)percentage) / 100).ToString() + "%");} catch{return;}
+                int percentage = (j * 10000) / M_SZ;
+                try { owner.Invoke(textDelegate, "Multiplying vector by matrix: " + (((double)percentage) / 100).ToString() + "%"); }
+                catch { return; }
             }
             try { owner.Invoke(textDelegate, "Multiplying vector by matrix completed."); }
             catch { return; }
@@ -106,7 +110,6 @@ namespace Lab1
             matrix = new int[M_SZ, M_SZ];
             vector = new int[M_SZ];
             vector_res = new int[M_SZ];
-
         }
     }
 }

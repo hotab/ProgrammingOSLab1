@@ -104,7 +104,7 @@
             this.Controls.Add(this.labelState);
             this.Controls.Add(this.button1);
             this.Name = "Form1";
-            this.Text = "Form1";
+            this.Text = "Lab1 Babkin";
             this.ResumeLayout(false);
             this.PerformLayout();
 

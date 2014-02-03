@@ -13,19 +13,17 @@ namespace Lab1
     public partial class Form1 : Form
     {
         Thread currentOp;
-
         DateTime startTime;
 
         delegate void SetButtonState(Button b, bool state);
-        delegate void MsgBox(string text);
-
         SetButtonState btnDelegate;
-        MsgBox msgDelegate;
-
         public void SetBtnState(Button b,bool state)
         {
             b.Enabled = state;
         }
+
+        delegate void MsgBox(string text);
+        MsgBox msgDelegate;
         public void ShowMsgBox(string s)
         {
             MessageBox.Show(s);
@@ -48,7 +46,6 @@ namespace Lab1
             labelState.Text = "";
             labelState2.Text = "";
         }
-
 
         public void GenerateAndMultiplyMbyV(object multData)
         {
@@ -88,12 +85,10 @@ namespace Lab1
             startTime = DateTime.Now;
             DisableButtons();
 
-            Thread part1 = new Thread(GenerateAndMultiplyMbyV);
-            part1.IsBackground = true;
+            Thread part1 = new Thread(GenerateAndMultiplyMbyV) { IsBackground = true };
             part1.Start(data1);
 
-            Thread part2 = new Thread(GenerateAndMultiplyVbyM);
-            part2.IsBackground = true;
+            Thread part2 = new Thread(GenerateAndMultiplyVbyM) { IsBackground = true };
             part2.Start(data2);
 
             part1.Join();
@@ -114,27 +109,21 @@ namespace Lab1
         private void button1_Click(object sender, EventArgs e)
         {
             ClearLabels();
-            currentOp = new Thread(Button1Cycle);
-            currentOp.IsBackground = true;
+            currentOp = new Thread(Button1Cycle) { IsBackground = true };
             currentOp.Start(new MultiplyData(this,labelState));
         }
-
         private void button2_Click(object sender, EventArgs e)
         {
             ClearLabels();
-            currentOp = new Thread(Button2Cycle);
-            currentOp.IsBackground = true;
+            currentOp = new Thread(Button2Cycle) { IsBackground = true };
             currentOp.Start(new MultiplyData(this, labelState));
         }
-        
         private void button3_Click(object sender, EventArgs e)
         {
             ClearLabels();
-            currentOp = new Thread(Button3Cycle);
-            currentOp.IsBackground = true;
+            currentOp = new Thread(Button3Cycle){IsBackground = true};
             currentOp.Start();
         }
-
         private void button4_Click(object sender, EventArgs e)
         {
             MessageBox.Show("Lab1, Babkin Vladislav, PS-12-1");

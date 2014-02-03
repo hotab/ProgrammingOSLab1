@@ -43,7 +43,7 @@ namespace Lab1
 
         public void MultiplyMatrixByVector()
         {
-            try{owner.Invoke(textDelegate, "Multiplying matrix by vector: 0%");} catch{return;}
+            UpdateState("Multiplying matrix by vector: 0%");
             for (int i = 0; i < M_SZ; i++)
             {
                 vector_res[i] = 0;
@@ -51,14 +51,13 @@ namespace Lab1
                     vector_res[i] += matrix[i, j] * vector[j];
 
                 int percentage = (i * 10000) / M_SZ;
-                try{owner.Invoke(textDelegate, "Multiplying matrix by vector: " + (((double)percentage) / 100).ToString() + "%");} catch{return;}
+                UpdateState("Multiplying matrix by vector: " + (((double)percentage) / 100).ToString() + "%");
             }
-            try { owner.Invoke(textDelegate, "Multiplying matrix by vector completed."); }
-            catch { return; }
+            UpdateState("Multiplying matrix by vector completed.");
         }
         public void MultiplyVectorByMatrix()
         {
-            try { owner.Invoke(textDelegate, "Multiplying vector by matrix: 0%");} catch{return;}
+            UpdateState("Multiplying vector by matrix: 0%");
             for (int i = 0; i < M_SZ; i++)
             {
                 vector_res[i] = 0;
@@ -69,38 +68,43 @@ namespace Lab1
                     vector_res[i] += matrix[j, i] * vector[j];
 
                 int percentage = (j * 10000) / M_SZ;
-                try { owner.Invoke(textDelegate, "Multiplying vector by matrix: " + (((double)percentage) / 100).ToString() + "%"); }
-                catch { return; }
+                UpdateState("Multiplying vector by matrix: " + (((double)percentage) / 100).ToString() + "%");
             }
-            try { owner.Invoke(textDelegate, "Multiplying vector by matrix completed."); }
-            catch { return; }
+            UpdateState("Multiplying vector by matrix completed.");
         }
 
         public void GenerateMatrix()
         {
 
-            try { owner.Invoke(textDelegate, "Generating matrix: 0%"); } catch{return;}
+            UpdateState("Generating matrix: 0%");
             Random r = new Random();
             for (int i = 0; i < M_SZ; i++)
             {
                 for (int j = 0; j < M_SZ; j++)
                     matrix[i, j] = r.Next(Max_Elem + 1);
                 int percentage = (i * 10000) / M_SZ;
-                 try { owner.Invoke(textDelegate, "Generating matrix: " + (((double)percentage) / 100).ToString() + "%"); } catch{return;}
+                UpdateState("Generating matrix: " + (((double)percentage) / 100).ToString() + "%");
             }
-            try { owner.Invoke(textDelegate, "Completed generating matrix"); }
-            catch { return; }
+            UpdateState("Completed generating matrix");
         }
         public void GenerateVector()
         {
-            try { owner.Invoke(textDelegate, "Generating vector...");} catch{return;}
+            UpdateState("Generating vector...");
             Random r = new Random();
             for (int i = 0; i < M_SZ; i++)
                 vector[i] = r.Next(Max_Elem + 1);
-            try { owner.Invoke(textDelegate, "Completed generating vector"); }
-            catch { return; }
+            UpdateState("Completed generating vector");
         }
 
+        public void UpdateState(string s)
+        {
+            try 
+            { 
+                owner.Invoke(textDelegate, s); 
+            }
+            catch 
+            { }
+        }
         public MultiplyData(Form1 owningForm, Label stateLabel)
         {
             owner = owningForm;

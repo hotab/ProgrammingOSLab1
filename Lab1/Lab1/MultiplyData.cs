@@ -50,7 +50,7 @@ namespace Lab1
                 for (int j = 0; j < M_SZ; j++)
                     vector_res[i] += matrix[i, j] * vector[j];
 
-                int percentage = (i * 10000) / M_SZ;
+                int percentage = (i * M_SZ) / M_SZ;
                 UpdateState("Multiplying matrix by vector: " + (((double)percentage) / 100).ToString() + "%");
             }
             UpdateState("Multiplying matrix by vector completed.");
@@ -67,7 +67,7 @@ namespace Lab1
                 for (int i = 0; i < M_SZ; i++)
                     vector_res[i] += matrix[j, i] * vector[j];
 
-                int percentage = (j * 10000) / M_SZ;
+                int percentage = (j * M_SZ) / M_SZ;
                 UpdateState("Multiplying vector by matrix: " + (((double)percentage) / 100).ToString() + "%");
             }
             UpdateState("Multiplying vector by matrix completed.");
@@ -82,7 +82,7 @@ namespace Lab1
             {
                 for (int j = 0; j < M_SZ; j++)
                     matrix[i, j] = r.Next(Max_Elem + 1);
-                int percentage = (i * 10000) / M_SZ;
+                int percentage = (i * M_SZ) / M_SZ;
                 UpdateState("Generating matrix: " + (((double)percentage) / 100).ToString() + "%");
             }
             UpdateState("Completed generating matrix");

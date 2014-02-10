@@ -12,8 +12,9 @@ namespace Lab1
 {
     public partial class Form1 : Form
     {
-        Thread currentOp;
-        DateTime startTime;
+        public const bool enableOutput = false;
+        public const bool useRandom = false;
+        public const bool multiplyVectorByMatrixColByCol = false;
 
         delegate void SetButtonState(Button b, bool state);
         SetButtonState btnDelegate;
@@ -31,15 +32,22 @@ namespace Lab1
 
         public void DisableButtons()
         {
-            this.Invoke(btnDelegate, button1, false);
-            this.Invoke(btnDelegate, button2, false);
-            this.Invoke(btnDelegate, button3, false);
+            if (enableOutput)
+            {
+                this.Invoke(btnDelegate, button1, false);
+                this.Invoke(btnDelegate, button2, false);
+                this.Invoke(btnDelegate, button3, false);
+            }
+             
         }
         public void EnableButtons()
         {
-            this.Invoke(btnDelegate, button1, true);
-            this.Invoke(btnDelegate, button2, true);
-            this.Invoke(btnDelegate, button3, true);
+            if (enableOutput)
+            {
+                this.Invoke(btnDelegate, button1, true);
+                this.Invoke(btnDelegate, button2, true);
+                this.Invoke(btnDelegate, button3, true);
+            }
         }
         public void ClearLabels()
         {
@@ -50,21 +58,21 @@ namespace Lab1
         public void GenerateAndMultiplyMbyV(object multData)
         {
             MultiplyData data = (MultiplyData)multData;
-            data.GenerateMatrix();
-            data.GenerateVector();
+            data.GenerateMatrix(useRandom);
+            data.GenerateVector(useRandom);
             data.MultiplyMatrixByVector();
         }
         public void GenerateAndMultiplyVbyM(object multData)
         {
             MultiplyData data = (MultiplyData)multData;
-            data.GenerateMatrix();
-            data.GenerateVector();
+            data.GenerateMatrix(useRandom);
+            data.GenerateVector(useRandom);
             data.MultiplyVectorByMatrix();
         }
 
         public void Button1Cycle(object multData)
         {
-            startTime = DateTime.Now;
+            DateTime startTime = DateTime.Now;
             DisableButtons();
             GenerateAndMultiplyMbyV(multData);
             EnableButtons();
@@ -72,7 +80,7 @@ namespace Lab1
         }
         public void Button2Cycle(object multData)
         {
-            startTime = DateTime.Now;
+            DateTime startTime = DateTime.Now;
             DisableButtons();
             GenerateAndMultiplyVbyM(multData);
             EnableButtons();
@@ -82,7 +90,7 @@ namespace Lab1
         {
             MultiplyData data1 = new MultiplyData(this, labelState);
             MultiplyData data2 = new MultiplyData(this, labelState2);
-            startTime = DateTime.Now;
+            DateTime startTime = DateTime.Now;
             DisableButtons();
 
             Thread part1 = new Thread(GenerateAndMultiplyMbyV) { IsBackground = true };
@@ -109,19 +117,19 @@ namespace Lab1
         private void button1_Click(object sender, EventArgs e)
         {
             ClearLabels();
-            currentOp = new Thread(Button1Cycle) { IsBackground = true };
+            Thread currentOp = new Thread(Button1Cycle) { IsBackground = true };
             currentOp.Start(new MultiplyData(this,labelState));
         }
         private void button2_Click(object sender, EventArgs e)
         {
             ClearLabels();
-            currentOp = new Thread(Button2Cycle) { IsBackground = true };
+            Thread currentOp = new Thread(Button2Cycle) { IsBackground = true };
             currentOp.Start(new MultiplyData(this, labelState));
         }
         private void button3_Click(object sender, EventArgs e)
         {
             ClearLabels();
-            currentOp = new Thread(Button3Cycle){IsBackground = true};
+            Thread currentOp = new Thread(Button3Cycle) { IsBackground = true };
             currentOp.Start();
         }
         private void button4_Click(object sender, EventArgs e)

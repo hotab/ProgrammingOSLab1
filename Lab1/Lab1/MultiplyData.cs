@@ -50,7 +50,7 @@ namespace Lab1
                 for (int j = 0; j < M_SZ; j++)
                     vector_res[i] += matrix[i, j] * vector[j];
 
-                int percentage = (i * 10000) / M_SZ;
+                int percentage = i;
                 UpdateState("Multiplying matrix by vector: " + (((double)percentage) / 100).ToString() + "%");
             }
             UpdateState("Multiplying matrix by vector completed.");
@@ -62,37 +62,62 @@ namespace Lab1
             {
                 vector_res[i] = 0;
             }
-            for (int j = 0; j < M_SZ; j++)
+            if(!Form1.multiplyVectorByMatrixColByCol)
+                for (int j = 0; j < M_SZ; j++)
+                {
+                    for (int i = 0; i < M_SZ; i++)
+                        vector_res[i] += matrix[j, i] * vector[j];
+
+                    int percentage = j;
+                    UpdateState("Multiplying vector by matrix: " + (((double)percentage) / 100).ToString() + "%");
+                }
+            else
             {
                 for (int i = 0; i < M_SZ; i++)
-                    vector_res[i] += matrix[j, i] * vector[j];
+                {
+                    for (int j = 0; j < M_SZ; j++)
+                        vector_res[i] += matrix[j, i] * vector[j];
 
-                int percentage = (j * 10000) / M_SZ;
-                UpdateState("Multiplying vector by matrix: " + (((double)percentage) / 100).ToString() + "%");
+                    int percentage = i;
+                    UpdateState("Multiplying vector by matrix: " + (((double)percentage) / 100).ToString() + "%");
+                }
             }
             UpdateState("Multiplying vector by matrix completed.");
         }
 
-        public void GenerateMatrix()
+        public void GenerateMatrix(bool random = false)
         {
 
             UpdateState("Generating matrix: 0%");
             Random r = new Random();
-            for (int i = 0; i < M_SZ; i++)
-            {
-                for (int j = 0; j < M_SZ; j++)
-                    matrix[i, j] = r.Next(Max_Elem + 1);
-                int percentage = (i * 10000) / M_SZ;
-                UpdateState("Generating matrix: " + (((double)percentage) / 100).ToString() + "%");
-            }
+            if(random)
+                for (int i = 0; i < M_SZ; i++)
+                {
+                    for (int j = 0; j < M_SZ; j++)
+                        matrix[i, j] = r.Next(Max_Elem + 1);
+                    int percentage = i;
+                    UpdateState("Generating matrix: " + (((double)percentage) / 100).ToString() + "%");
+                }
+            else
+                for (int i = 0; i < M_SZ; i++)
+                {
+                    for (int j = 0; j < M_SZ; j++)
+                        matrix[i, j] = 2;
+                    int percentage = i;
+                    UpdateState("Generating matrix: " + (((double)percentage) / 100).ToString() + "%");
+                }
             UpdateState("Completed generating matrix");
         }
-        public void GenerateVector()
+        public void GenerateVector(bool random = false)
         {
             UpdateState("Generating vector...");
             Random r = new Random();
-            for (int i = 0; i < M_SZ; i++)
-                vector[i] = r.Next(Max_Elem + 1);
+            if(random)
+                for (int i = 0; i < M_SZ; i++)
+                    vector[i] = r.Next(Max_Elem + 1);
+            else
+                for (int i = 0; i < M_SZ; i++)
+                    vector[i] = 2;
             UpdateState("Completed generating vector");
         }
 
@@ -100,7 +125,8 @@ namespace Lab1
         {
             try 
             { 
-                owner.Invoke(textDelegate, s); 
+                if(Form1.enableOutput)
+                    owner.Invoke(textDelegate, s); 
             }
             catch 
             { }

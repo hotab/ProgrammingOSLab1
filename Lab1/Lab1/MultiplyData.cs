@@ -77,7 +77,6 @@ namespace Lab1
                 {
                     for (int j = 0; j < M_SZ; j++)
                         vector_res[i] += matrix[j, i] * vector[j];
-
                     int percentage = i;
                     UpdateState("Multiplying vector by matrix: " + (((double)percentage) / 100).ToString() + "%");
                 }
